@@ -226,7 +226,7 @@ class MFRC522:
 
         return (status, backBits)
 
-    def MFRC522_Anticoll(self):
+    def anticoll(self):
         backData = []
         serNumCheck = 0
 
