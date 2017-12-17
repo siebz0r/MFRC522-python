@@ -111,7 +111,7 @@ class MFRC522:
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(22, GPIO.OUT)
         GPIO.output(self.NRSTPD, 1)
-        self.MFRC522_Init()
+        self.initialize()
 
     def reset(self):
         self.write_register(self.CommandReg, self.PCD_RESETPHASE)
@@ -393,7 +393,7 @@ class MFRC522:
                 print "Authentication error"
             i = i + 1
 
-    def MFRC522_Init(self):
+    def initialize(self):
         GPIO.output(self.NRSTPD, 1)
 
         self.reset()
