@@ -131,7 +131,7 @@ class MFRC522:
         tmp = self.read_register(reg)
         self.write_register(reg, tmp & (~mask))
 
-    def AntennaOn(self):
+    def enable_antenna(self):
         temp = self.read_register(self.TxControlReg)
         if(~(temp & 0x03)):
             self.set_bit_mask(self.TxControlReg, 0x03)
@@ -405,4 +405,4 @@ class MFRC522:
 
         self.write_register(self.TxAutoReg, 0x40)
         self.write_register(self.ModeReg, 0x3D)
-        self.AntennaOn()
+        self.enable_antenna()
