@@ -139,7 +139,7 @@ class MFRC522:
     def disable_antenna(self):
         self.clear_bit_mask(self.TxControlReg, 0x03)
 
-    def MFRC522_ToCard(self, command, sendData):
+    def to_card(self, command, sendData):
         backData = []
         backLen = 0
         status = self.MI_ERR
@@ -217,7 +217,7 @@ class MFRC522:
         self.write_register(self.BitFramingReg, 0x07)
 
         TagType.append(reqMode)
-        (status, backData, backBits) = self.MFRC522_ToCard(
+        (status, backData, backBits) = self.to_card(
             self.PCD_TRANSCEIVE,
             TagType)
 
@@ -237,7 +237,7 @@ class MFRC522:
         serNum.append(self.PICC_ANTICOLL)
         serNum.append(0x20)
 
-        (status, backData, backBits) = self.MFRC522_ToCard(
+        (status, backData, backBits) = self.to_card(
             self.PCD_TRANSCEIVE,
             serNum)
 
@@ -285,7 +285,7 @@ class MFRC522:
         pOut = self.CalulateCRC(buf)
         buf.append(pOut[0])
         buf.append(pOut[1])
-        (status, backData, backLen) = self.MFRC522_ToCard(
+        (status, backData, backLen) = self.to_card(
             self.PCD_TRANSCEIVE,
             buf)
 
@@ -317,7 +317,7 @@ class MFRC522:
             i = i + 1
 
         # Now we start the authentication itself
-        (status, backData, backLen) = self.MFRC522_ToCard(
+        (status, backData, backLen) = self.to_card(
             self.PCD_AUTHENT,
             buff)
 
@@ -340,7 +340,7 @@ class MFRC522:
         pOut = self.CalulateCRC(recvData)
         recvData.append(pOut[0])
         recvData.append(pOut[1])
-        (status, backData, backLen) = self.MFRC522_ToCard(
+        (status, backData, backLen) = self.to_card(
             self.PCD_TRANSCEIVE,
             recvData)
         if not(status == self.MI_OK):
@@ -355,7 +355,7 @@ class MFRC522:
         crc = self.CalulateCRC(buff)
         buff.append(crc[0])
         buff.append(crc[1])
-        (status, backData, backLen) = self.MFRC522_ToCard(
+        (status, backData, backLen) = self.to_card(
             self.PCD_TRANSCEIVE,
             buff)
         if not(status == self.MI_OK) or not(backLen == 4) or \
@@ -373,7 +373,7 @@ class MFRC522:
             crc = self.CalulateCRC(buf)
             buf.append(crc[0])
             buf.append(crc[1])
-            (status, backData, backLen) = self.MFRC522_ToCard(
+            (status, backData, backLen) = self.to_card(
                 self.PCD_TRANSCEIVE,
                 buf)
             if not(status == self.MI_OK) or not(backLen == 4) or \
