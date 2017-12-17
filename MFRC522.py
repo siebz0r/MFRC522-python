@@ -133,7 +133,7 @@ class MFRC522:
 
     def enable_antenna(self):
         temp = self.read_register(self.TxControlReg)
-        if(~(temp & 0x03)):
+        if ~(temp & 0x03):
             self.set_bit_mask(self.TxControlReg, 0x03)
 
     def disable_antenna(self):
@@ -162,7 +162,7 @@ class MFRC522:
 
         self.write_register(self.CommandReg, self.PCD_IDLE)
 
-        while(i < len(sendData)):
+        while i < len(sendData):
             self.write_register(self.FIFODataReg, sendData[i])
             i = i + 1
 
@@ -207,7 +207,7 @@ class MFRC522:
             else:
                 status = self.MI_ERR
 
-        return (status, backData, backLen)
+        return status, backData, backLen
 
     def request(self, reqMode):
         status = None
@@ -217,14 +217,14 @@ class MFRC522:
         self.write_register(self.BitFramingReg, 0x07)
 
         TagType.append(reqMode)
-        (status, backData, backBits) = self.to_card(
+        status, backData, backBits = self.to_card(
             self.PCD_TRANSCEIVE,
             TagType)
 
         if ((status != self.MI_OK) | (backBits != 0x10)):
             status = self.MI_ERR
 
-        return (status, backBits)
+        return status, backBits
 
     def anticoll(self):
         backData = []
@@ -237,11 +237,11 @@ class MFRC522:
         serNum.append(self.PICC_ANTICOLL)
         serNum.append(0x20)
 
-        (status, backData, backBits) = self.to_card(
+        status, backData, backBits = self.to_card(
             self.PCD_TRANSCEIVE,
             serNum)
 
-        if(status == self.MI_OK):
+        if status == self.MI_OK:
             i = 0
             if len(backData) == 5:
                 while i < 4:
@@ -285,11 +285,11 @@ class MFRC522:
         pOut = self.calulate_crc(buf)
         buf.append(pOut[0])
         buf.append(pOut[1])
-        (status, backData, backLen) = self.to_card(
+        status, backData, backLen = self.to_card(
             self.PCD_TRANSCEIVE,
             buf)
 
-        if (status == self.MI_OK) and (backLen == 0x18):
+        if status == self.MI_OK and backLen == 0x18:
             print "Size: " + str(backData[0])
             return backData[0]
         else:
@@ -306,23 +306,23 @@ class MFRC522:
 
         # Now we need to append the authKey which usually is 6 bytes of 0xFF
         i = 0
-        while(i < len(Sectorkey)):
+        while i < len(Sectorkey):
             buff.append(Sectorkey[i])
             i = i + 1
         i = 0
 
         # Next we append the first 4 bytes of the UID
-        while(i < 4):
+        while i < 4:
             buff.append(serNum[i])
             i = i + 1
 
         # Now we start the authentication itself
-        (status, backData, backLen) = self.to_card(
+        status, backData, backLen = self.to_card(
             self.PCD_AUTHENT,
             buff)
 
         # Check if an error occurred
-        if not(status == self.MI_OK):
+        if not status == self.MI_OK:
             print "AUTH ERROR!!"
         if not (self.read_register(self.Status2Reg) & 0x08) != 0:
             print "AUTH ERROR(status2reg & 0x08) != 0"
@@ -340,10 +340,10 @@ class MFRC522:
         pOut = self.calulate_crc(recvData)
         recvData.append(pOut[0])
         recvData.append(pOut[1])
-        (status, backData, backLen) = self.to_card(
+        status, backData, backLen = self.to_card(
             self.PCD_TRANSCEIVE,
             recvData)
-        if not(status == self.MI_OK):
+        if not status == self.MI_OK:
             print "Error while reading!"
         if len(backData) == 16:
             print "Sector " + str(blockAddr) + " " + str(backData)
@@ -355,7 +355,7 @@ class MFRC522:
         crc = self.calulate_crc(buff)
         buff.append(crc[0])
         buff.append(crc[1])
-        (status, backData, backLen) = self.to_card(
+        status, backData, backLen = self.to_card(
             self.PCD_TRANSCEIVE,
             buff)
         if not(status == self.MI_OK) or not(backLen == 4) or \
@@ -373,7 +373,7 @@ class MFRC522:
             crc = self.calulate_crc(buf)
             buf.append(crc[0])
             buf.append(crc[1])
-            (status, backData, backLen) = self.to_card(
+            status, backData, backLen = self.to_card(
                 self.PCD_TRANSCEIVE,
                 buf)
             if not(status == self.MI_OK) or not(backLen == 4) or \
