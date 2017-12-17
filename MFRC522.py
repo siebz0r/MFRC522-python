@@ -345,7 +345,6 @@ class MFRC522:
             recvData)
         if not(status == self.MI_OK):
             print "Error while reading!"
-        i = 0
         if len(backData) == 16:
             print "Sector " + str(blockAddr) + " " + str(backData)
 
