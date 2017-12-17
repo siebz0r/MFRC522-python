@@ -62,7 +62,7 @@ while continue_reading:
 
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
-            MIFAREReader.MFRC522_Read(8)
+            MIFAREReader.read(8)
             MIFAREReader.stop_crypto()
         else:
             print "Authentication error"

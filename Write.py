@@ -69,7 +69,7 @@ while continue_reading:
 
             print "Sector 8 looked like this:"
             # Read block 8
-            MIFAREReader.MFRC522_Read(8)
+            MIFAREReader.read(8)
             print "\n"
 
             print "Sector 8 will now be filled with 0xFF:"
@@ -79,7 +79,7 @@ while continue_reading:
 
             print "It now looks like this:"
             # Check to see if it was written
-            MIFAREReader.MFRC522_Read(8)
+            MIFAREReader.read(8)
             print "\n"
 
             data = []
@@ -93,7 +93,7 @@ while continue_reading:
 
             print "It is now empty:"
             # Check to see if it was written
-            MIFAREReader.MFRC522_Read(8)
+            MIFAREReader.read(8)
             print "\n"
 
             # Stop

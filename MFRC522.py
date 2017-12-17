@@ -333,7 +333,7 @@ class MFRC522:
     def stop_crypto(self):
         self.clear_bit_mask(self.Status2Reg, 0x08)
 
-    def MFRC522_Read(self, blockAddr):
+    def read(self, blockAddr):
         recvData = []
         recvData.append(self.PICC_READ)
         recvData.append(blockAddr)
@@ -388,7 +388,7 @@ class MFRC522:
             status = self.authenticate(self.PICC_AUTHENT1A, i, key, uid)
             # Check if authenticated
             if status == self.MI_OK:
-                self.MFRC522_Read(i)
+                self.read(i)
             else:
                 print "Authentication error"
             i = i + 1
