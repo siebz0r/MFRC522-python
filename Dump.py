@@ -47,7 +47,7 @@ while continue_reading:
         key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
         # Select the scanned tag
-        MIFAREReader.MFRC522_SelectTag(uid)
+        MIFAREReader.select_tag(uid)
 
         # Dump the data
         MIFAREReader.MFRC522_DumpClassic1K(key, uid)

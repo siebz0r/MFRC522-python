@@ -273,7 +273,7 @@ class MFRC522:
         pOutData.append(self.read_register(self.CRCResultRegM))
         return pOutData
 
-    def MFRC522_SelectTag(self, serNum):
+    def select_tag(self, serNum):
         backData = []
         buf = []
         buf.append(self.PICC_SElECTTAG)
