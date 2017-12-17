@@ -50,7 +50,7 @@ while continue_reading:
         MIFAREReader.select_tag(uid)
 
         # Dump the data
-        MIFAREReader.MFRC522_DumpClassic1K(key, uid)
+        MIFAREReader.dump_classic_1k(key, uid)
 
         # Stop
         MIFAREReader.stop_crypto()
