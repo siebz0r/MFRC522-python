@@ -123,7 +123,7 @@ class MFRC522:
         val = spi.transfer((((addr << 1) & 0x7E) | 0x80, 0))
         return val[1]
 
-    def SetBitMask(self, reg, mask):
+    def set_bit_mask(self, reg, mask):
         tmp = self.read_register(reg)
         self.write_register(reg, tmp | mask)
 
@@ -134,7 +134,7 @@ class MFRC522:
     def AntennaOn(self):
         temp = self.read_register(self.TxControlReg)
         if(~(temp & 0x03)):
-            self.SetBitMask(self.TxControlReg, 0x03)
+            self.set_bit_mask(self.TxControlReg, 0x03)
 
     def AntennaOff(self):
         self.ClearBitMask(self.TxControlReg, 0x03)
@@ -158,7 +158,7 @@ class MFRC522:
 
         self.write_register(self.CommIEnReg, irqEn | 0x80)
         self.ClearBitMask(self.CommIrqReg, 0x80)
-        self.SetBitMask(self.FIFOLevelReg, 0x80)
+        self.set_bit_mask(self.FIFOLevelReg, 0x80)
 
         self.write_register(self.CommandReg, self.PCD_IDLE)
 
@@ -169,7 +169,7 @@ class MFRC522:
         self.write_register(self.CommandReg, command)
 
         if command == self.PCD_TRANSCEIVE:
-            self.SetBitMask(self.BitFramingReg, 0x80)
+            self.set_bit_mask(self.BitFramingReg, 0x80)
 
         i = 2000
         while True:
@@ -256,7 +256,7 @@ class MFRC522:
 
     def CalulateCRC(self, pIndata):
         self.ClearBitMask(self.DivIrqReg, 0x04)
-        self.SetBitMask(self.FIFOLevelReg, 0x80)
+        self.set_bit_mask(self.FIFOLevelReg, 0x80)
         i = 0
         while i < len(pIndata):
             self.write_register(self.FIFODataReg, pIndata[i])
