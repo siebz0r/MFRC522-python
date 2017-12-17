@@ -54,7 +54,7 @@ while continue_reading:
         MIFAREReader.select_tag(uid)
 
         # Authenticate
-        status = MIFAREReader.MFRC522_Auth(
+        status = MIFAREReader.authenticate(
             MIFAREReader.PICC_AUTHENT1A,
             8,
             key,
