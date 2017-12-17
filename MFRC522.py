@@ -136,7 +136,7 @@ class MFRC522:
         if(~(temp & 0x03)):
             self.set_bit_mask(self.TxControlReg, 0x03)
 
-    def AntennaOff(self):
+    def disable_antenna(self):
         self.clear_bit_mask(self.TxControlReg, 0x03)
 
     def MFRC522_ToCard(self, command, sendData):
