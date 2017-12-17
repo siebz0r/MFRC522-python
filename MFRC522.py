@@ -209,7 +209,7 @@ class MFRC522:
 
         return (status, backData, backLen)
 
-    def MFRC522_Request(self, reqMode):
+    def request(self, reqMode):
         status = None
         backBits = None
         TagType = []
