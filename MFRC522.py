@@ -6,6 +6,7 @@ import spi
 import signal
 import time
 
+
 class MFRC522:
     NRSTPD = 22
 
@@ -210,7 +211,6 @@ class MFRC522:
 
         return (status, backData, backLen)
 
-
     def MFRC522_Request(self, reqMode):
         status = None
         backBits = None
@@ -225,7 +225,6 @@ class MFRC522:
             status = self.MI_ERR
 
         return (status, backBits)
-
 
     def MFRC522_Anticoll(self):
         backData = []
@@ -384,7 +383,6 @@ class MFRC522:
         GPIO.output(self.NRSTPD, 1)
 
         self.MFRC522_Reset()
-
 
         self.Write_MFRC522(self.TModeReg, 0x8D)
         self.Write_MFRC522(self.TPrescalerReg, 0x3E)
