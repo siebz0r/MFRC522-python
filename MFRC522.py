@@ -254,7 +254,7 @@ class MFRC522:
 
         return (status, backData)
 
-    def CalulateCRC(self, pIndata):
+    def calulate_crc(self, pIndata):
         self.clear_bit_mask(self.DivIrqReg, 0x04)
         self.set_bit_mask(self.FIFOLevelReg, 0x80)
         i = 0
@@ -282,7 +282,7 @@ class MFRC522:
         while i < 5:
             buf.append(serNum[i])
             i = i + 1
-        pOut = self.CalulateCRC(buf)
+        pOut = self.calulate_crc(buf)
         buf.append(pOut[0])
         buf.append(pOut[1])
         (status, backData, backLen) = self.to_card(
@@ -337,7 +337,7 @@ class MFRC522:
         recvData = []
         recvData.append(self.PICC_READ)
         recvData.append(blockAddr)
-        pOut = self.CalulateCRC(recvData)
+        pOut = self.calulate_crc(recvData)
         recvData.append(pOut[0])
         recvData.append(pOut[1])
         (status, backData, backLen) = self.to_card(
@@ -352,7 +352,7 @@ class MFRC522:
         buff = []
         buff.append(self.PICC_WRITE)
         buff.append(blockAddr)
-        crc = self.CalulateCRC(buff)
+        crc = self.calulate_crc(buff)
         buff.append(crc[0])
         buff.append(crc[1])
         (status, backData, backLen) = self.to_card(
@@ -370,7 +370,7 @@ class MFRC522:
             while i < 16:
                 buf.append(writeData[i])
                 i = i + 1
-            crc = self.CalulateCRC(buf)
+            crc = self.calulate_crc(buf)
             buf.append(crc[0])
             buf.append(crc[1])
             (status, backData, backLen) = self.to_card(
