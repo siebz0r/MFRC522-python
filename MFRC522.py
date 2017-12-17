@@ -119,20 +119,20 @@ class MFRC522:
     def write_register(self, addr, val):
         spi.transfer(((addr << 1) & 0x7E, val))
 
-    def Read_MFRC522(self, addr):
+    def read_register(self, addr):
         val = spi.transfer((((addr << 1) & 0x7E) | 0x80, 0))
         return val[1]
 
     def SetBitMask(self, reg, mask):
-        tmp = self.Read_MFRC522(reg)
+        tmp = self.read_register(reg)
         self.write_register(reg, tmp | mask)
 
     def ClearBitMask(self, reg, mask):
-        tmp = self.Read_MFRC522(reg)
+        tmp = self.read_register(reg)
         self.write_register(reg, tmp & (~mask))
 
     def AntennaOn(self):
-        temp = self.Read_MFRC522(self.TxControlReg)
+        temp = self.read_register(self.TxControlReg)
         if(~(temp & 0x03)):
             self.SetBitMask(self.TxControlReg, 0x03)
 
@@ -173,7 +173,7 @@ class MFRC522:
 
         i = 2000
         while True:
-            n = self.Read_MFRC522(self.CommIrqReg)
+            n = self.read_register(self.CommIrqReg)
             i = i - 1
             if ~((i != 0) and ~(n & 0x01) and ~(n & waitIRq)):
                 break
@@ -181,15 +181,15 @@ class MFRC522:
         self.ClearBitMask(self.BitFramingReg, 0x80)
 
         if i != 0:
-            if (self.Read_MFRC522(self.ErrorReg) & 0x1B) == 0x00:
+            if (self.read_register(self.ErrorReg) & 0x1B) == 0x00:
                 status = self.MI_OK
 
                 if n & irqEn & 0x01:
                     status = self.MI_NOTAGERR
 
                 if command == self.PCD_TRANSCEIVE:
-                    n = self.Read_MFRC522(self.FIFOLevelReg)
-                    lastBits = self.Read_MFRC522(self.ControlReg) & 0x07
+                    n = self.read_register(self.FIFOLevelReg)
+                    lastBits = self.read_register(self.ControlReg) & 0x07
                     if lastBits != 0:
                         backLen = (n - 1) * 8 + lastBits
                     else:
@@ -202,7 +202,7 @@ class MFRC522:
 
                     i = 0
                     while i < n:
-                        backData.append(self.Read_MFRC522(self.FIFODataReg))
+                        backData.append(self.read_register(self.FIFODataReg))
                         i = i + 1
             else:
                 status = self.MI_ERR
@@ -264,13 +264,13 @@ class MFRC522:
         self.write_register(self.CommandReg, self.PCD_CALCCRC)
         i = 0xFF
         while True:
-            n = self.Read_MFRC522(self.DivIrqReg)
+            n = self.read_register(self.DivIrqReg)
             i = i - 1
             if not ((i != 0) and not (n & 0x04)):
                 break
         pOutData = []
-        pOutData.append(self.Read_MFRC522(self.CRCResultRegL))
-        pOutData.append(self.Read_MFRC522(self.CRCResultRegM))
+        pOutData.append(self.read_register(self.CRCResultRegL))
+        pOutData.append(self.read_register(self.CRCResultRegM))
         return pOutData
 
     def MFRC522_SelectTag(self, serNum):
@@ -324,7 +324,7 @@ class MFRC522:
         # Check if an error occurred
         if not(status == self.MI_OK):
             print "AUTH ERROR!!"
-        if not (self.Read_MFRC522(self.Status2Reg) & 0x08) != 0:
+        if not (self.read_register(self.Status2Reg) & 0x08) != 0:
             print "AUTH ERROR(status2reg & 0x08) != 0"
 
         # Return the status
