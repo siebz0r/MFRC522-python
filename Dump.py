@@ -53,4 +53,4 @@ while continue_reading:
         MIFAREReader.MFRC522_DumpClassic1K(key, uid)
 
         # Stop
-        MIFAREReader.MFRC522_StopCrypto1()
+        MIFAREReader.stop_crypto()

@@ -330,7 +330,7 @@ class MFRC522:
         # Return the status
         return status
 
-    def MFRC522_StopCrypto1(self):
+    def stop_crypto(self):
         self.clear_bit_mask(self.Status2Reg, 0x08)
 
     def MFRC522_Read(self, blockAddr):

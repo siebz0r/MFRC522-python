@@ -97,7 +97,7 @@ while continue_reading:
             print "\n"
 
             # Stop
-            MIFAREReader.MFRC522_StopCrypto1()
+            MIFAREReader.stop_crypto()
 
             # Make sure to stop reading for cards
             continue_reading = False
