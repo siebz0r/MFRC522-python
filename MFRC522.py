@@ -114,9 +114,9 @@ class MFRC522:
         self.MFRC522_Init()
 
     def reset(self):
-        self.Write_MFRC522(self.CommandReg, self.PCD_RESETPHASE)
+        self.write_register(self.CommandReg, self.PCD_RESETPHASE)
 
-    def Write_MFRC522(self, addr, val):
+    def write_register(self, addr, val):
         spi.transfer(((addr << 1) & 0x7E, val))
 
     def Read_MFRC522(self, addr):
@@ -125,11 +125,11 @@ class MFRC522:
 
     def SetBitMask(self, reg, mask):
         tmp = self.Read_MFRC522(reg)
-        self.Write_MFRC522(reg, tmp | mask)
+        self.write_register(reg, tmp | mask)
 
     def ClearBitMask(self, reg, mask):
         tmp = self.Read_MFRC522(reg)
-        self.Write_MFRC522(reg, tmp & (~mask))
+        self.write_register(reg, tmp & (~mask))
 
     def AntennaOn(self):
         temp = self.Read_MFRC522(self.TxControlReg)
@@ -156,17 +156,17 @@ class MFRC522:
             irqEn = 0x77
             waitIRq = 0x30
 
-        self.Write_MFRC522(self.CommIEnReg, irqEn | 0x80)
+        self.write_register(self.CommIEnReg, irqEn | 0x80)
         self.ClearBitMask(self.CommIrqReg, 0x80)
         self.SetBitMask(self.FIFOLevelReg, 0x80)
 
-        self.Write_MFRC522(self.CommandReg, self.PCD_IDLE)
+        self.write_register(self.CommandReg, self.PCD_IDLE)
 
         while(i < len(sendData)):
-            self.Write_MFRC522(self.FIFODataReg, sendData[i])
+            self.write_register(self.FIFODataReg, sendData[i])
             i = i + 1
 
-        self.Write_MFRC522(self.CommandReg, command)
+        self.write_register(self.CommandReg, command)
 
         if command == self.PCD_TRANSCEIVE:
             self.SetBitMask(self.BitFramingReg, 0x80)
@@ -214,7 +214,7 @@ class MFRC522:
         backBits = None
         TagType = []
 
-        self.Write_MFRC522(self.BitFramingReg, 0x07)
+        self.write_register(self.BitFramingReg, 0x07)
 
         TagType.append(reqMode)
         (status, backData, backBits) = self.MFRC522_ToCard(
@@ -232,7 +232,7 @@ class MFRC522:
 
         serNum = []
 
-        self.Write_MFRC522(self.BitFramingReg, 0x00)
+        self.write_register(self.BitFramingReg, 0x00)
 
         serNum.append(self.PICC_ANTICOLL)
         serNum.append(0x20)
@@ -259,9 +259,9 @@ class MFRC522:
         self.SetBitMask(self.FIFOLevelReg, 0x80)
         i = 0
         while i < len(pIndata):
-            self.Write_MFRC522(self.FIFODataReg, pIndata[i])
+            self.write_register(self.FIFODataReg, pIndata[i])
             i = i + 1
-        self.Write_MFRC522(self.CommandReg, self.PCD_CALCCRC)
+        self.write_register(self.CommandReg, self.PCD_CALCCRC)
         i = 0xFF
         while True:
             n = self.Read_MFRC522(self.DivIrqReg)
@@ -398,11 +398,11 @@ class MFRC522:
 
         self.reset()
 
-        self.Write_MFRC522(self.TModeReg, 0x8D)
-        self.Write_MFRC522(self.TPrescalerReg, 0x3E)
-        self.Write_MFRC522(self.TReloadRegL, 30)
-        self.Write_MFRC522(self.TReloadRegH, 0)
+        self.write_register(self.TModeReg, 0x8D)
+        self.write_register(self.TPrescalerReg, 0x3E)
+        self.write_register(self.TReloadRegL, 30)
+        self.write_register(self.TReloadRegH, 0)
 
-        self.Write_MFRC522(self.TxAutoReg, 0x40)
-        self.Write_MFRC522(self.ModeReg, 0x3D)
+        self.write_register(self.TxAutoReg, 0x40)
+        self.write_register(self.ModeReg, 0x3D)
         self.AntennaOn()
