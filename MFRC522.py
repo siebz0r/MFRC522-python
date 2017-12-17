@@ -127,7 +127,7 @@ class MFRC522:
         tmp = self.read_register(reg)
         self.write_register(reg, tmp | mask)
 
-    def ClearBitMask(self, reg, mask):
+    def clear_bit_mask(self, reg, mask):
         tmp = self.read_register(reg)
         self.write_register(reg, tmp & (~mask))
 
@@ -137,7 +137,7 @@ class MFRC522:
             self.set_bit_mask(self.TxControlReg, 0x03)
 
     def AntennaOff(self):
-        self.ClearBitMask(self.TxControlReg, 0x03)
+        self.clear_bit_mask(self.TxControlReg, 0x03)
 
     def MFRC522_ToCard(self, command, sendData):
         backData = []
@@ -157,7 +157,7 @@ class MFRC522:
             waitIRq = 0x30
 
         self.write_register(self.CommIEnReg, irqEn | 0x80)
-        self.ClearBitMask(self.CommIrqReg, 0x80)
+        self.clear_bit_mask(self.CommIrqReg, 0x80)
         self.set_bit_mask(self.FIFOLevelReg, 0x80)
 
         self.write_register(self.CommandReg, self.PCD_IDLE)
@@ -178,7 +178,7 @@ class MFRC522:
             if ~((i != 0) and ~(n & 0x01) and ~(n & waitIRq)):
                 break
 
-        self.ClearBitMask(self.BitFramingReg, 0x80)
+        self.clear_bit_mask(self.BitFramingReg, 0x80)
 
         if i != 0:
             if (self.read_register(self.ErrorReg) & 0x1B) == 0x00:
@@ -255,7 +255,7 @@ class MFRC522:
         return (status, backData)
 
     def CalulateCRC(self, pIndata):
-        self.ClearBitMask(self.DivIrqReg, 0x04)
+        self.clear_bit_mask(self.DivIrqReg, 0x04)
         self.set_bit_mask(self.FIFOLevelReg, 0x80)
         i = 0
         while i < len(pIndata):
@@ -331,7 +331,7 @@ class MFRC522:
         return status
 
     def MFRC522_StopCrypto1(self):
-        self.ClearBitMask(self.Status2Reg, 0x08)
+        self.clear_bit_mask(self.Status2Reg, 0x08)
 
     def MFRC522_Read(self, blockAddr):
         recvData = []
